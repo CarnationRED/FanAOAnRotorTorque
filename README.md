@@ -7,4 +7,4 @@ Dependencies:
 Usage: 
      1.Press "=" to toggole control in flight
      2.Use throttle to control rotor's rpm, rotor's output limit is controlled by plugin if enabled.
-     2.You can change target AOA in propellers' PAW(part action window)
+     3.You can change target AOA in propellers' PAW(part action window)
