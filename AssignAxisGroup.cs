@@ -6,8 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace firstinksp
+namespace PropellerPithAndRotorTorque
 {
+    /// <summary>
+    /// This is used to assign Main Throttle to RPM limit automatically
+    /// </summary>
     [KSPAddon(KSPAddon.Startup.EditorAny, false)]
     class AssignAxisGroup : MonoBehaviour
     {
@@ -24,7 +27,7 @@ namespace firstinksp
         private void OnPartEvent(ConstructionEventType t, Part p)
         {
             if (t == ConstructionEventType.PartCreated)
-               // if (AOAMgr.ROTOR_NAMES.Contains(p.partName))
+               // if (PPARTMgr.ROTOR_NAMES.Contains(p.partName))
                     AssignAxis(p);
         }
 

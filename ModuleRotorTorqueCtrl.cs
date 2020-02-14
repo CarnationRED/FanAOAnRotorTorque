@@ -9,39 +9,31 @@ using UnityEngine;
 using System.Text.RegularExpressions;
 using Expansions.Serenity;
 
-namespace firstinksp
+namespace PropellerPithAndRotorTorque
 {
     public class ModuleRotorTorqueCtrl : PartModule
     {
         [KSPField(isPersistant = true)]
         private bool Enabled = false;
 
-        ModuleRoboticServoRotor moduleRSR;
-        public override void OnLoad(ConfigNode node)
+        private PPARTMgr mgr;
+
+        public void Init(PPARTMgr m)
         {
-            if (HighLogic.LoadedSceneIsEditor) return;
-            moduleRSR = part.FindModuleImplementing<ModuleRoboticServoRotor>();
-            if (moduleRSR == null) Destroy(this);
-            AOAMgr.TorqueCtrlEnabled = Enabled;
-            AOAMgr.Init();
-            AOAMgr.RegisterModuleRSR(moduleRSR);
+            if (HighLogic.LoadedSceneIsEditor || m == null) return;
+            if (part.FindModuleImplementing<ModuleRoboticServoRotor>() == null) { Destroy(this); return; }
+            mgr = m;
+            mgr.TorqueCtrlEnabled = Enabled;
         }
 
         public override void OnSave(ConfigNode node)
         {
-            if (!HighLogic.LoadedSceneIsFlight) return;
+            if (!HighLogic.LoadedSceneIsFlight) return;//What if the game saves vessel in editor?
             base.OnSave(node);
-            Enabled = AOAMgr.TorqueCtrlEnabled;
-        }
-
-
-        void OnDestroy()
-        {
-            if (!HighLogic.LoadedSceneIsFlight) return;
-            AOAMgr.RemoveModuleRSR(moduleRSR);
-            if (!HighLogic.LoadedSceneIsEditor)
-                AOAMgr.ReInit();
+            if (mgr != null)
+            {
+                Enabled = mgr.TorqueCtrlEnabled;
+            }
         }
     }
-
 }
